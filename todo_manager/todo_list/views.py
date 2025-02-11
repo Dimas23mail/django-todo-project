@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest
-from django.views.generic import ListView, DetailView, CreateView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import ToDoItemForm
+from .forms import ToDoItemCreateForm, ToDoItemUpdateForm
 from .models import ToDoItem
 
 
@@ -35,5 +36,16 @@ class ToDoDetailView(DetailView):
 
 class ToDoItemCreateView(CreateView):
     model = ToDoItem
-    form_class = ToDoItemForm
+    form_class = ToDoItemCreateForm
     #  fields = ("title", "description",)
+
+
+class ToDoItemUpdateView(UpdateView):
+    model = ToDoItem
+    template_name_suffix = "_update_form"
+    form_class = ToDoItemUpdateForm
+
+
+class ToDoItemDeleteView(DeleteView):
+    model = ToDoItem
+    success_url = reverse_lazy("todo_list:list")
